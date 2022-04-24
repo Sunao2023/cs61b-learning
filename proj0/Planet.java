@@ -5,7 +5,6 @@ public class Planet {
     public double yyVel;
     public double mass;
     public String imgFileName;
-    public static double G = 6.67e-11;
 
     /** Initialize a new planet with the given parameters */
     public Planet(double xP, double yP, double xV, double yV, double m, String img) {
@@ -36,6 +35,7 @@ public class Planet {
     /** Calculate the force exerted on this planet by the given planet */
     public double calcForceExertedBy(Planet Other) {
         double Force, distance;
+        double G = 6.67e-11;
         distance = this.calcDistance(Other);
         Force = G * this.mass * Other.mass / Math.pow(distance, 2);
         return Force;

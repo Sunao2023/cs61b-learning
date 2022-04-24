@@ -26,8 +26,6 @@ public class NBody {
         return planets;
     }
 
-    public static String imageToDraw = "images/starfield.jpg";
-
     public static void main(String[] args) {
         //Read the information about planets.
         double T = Double.parseDouble(args[0]);
@@ -37,6 +35,7 @@ public class NBody {
         Planet[] planets = readPlanets(filename);
 
         // Draw the universe.
+        String imageToDraw = "images/starfield.jpg";
         StdDraw.setScale(-radius, radius);
         StdDraw.clear();
         StdDraw.picture(0, 0, imageToDraw); 
