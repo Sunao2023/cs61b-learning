@@ -82,8 +82,14 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        IntList L = A;
+        while (A.rest != null) {
+            A = A.rest;
+        }
+        A.rest = B;
+        return L;
     }
+
 
     /**
      * Returns a list consisting of the elements of A followed by the
@@ -91,7 +97,10 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        if (A == null) {
+            return B;
+        }
+        return new IntList(A.first, catenate(A.rest, B));
     }
 
 
