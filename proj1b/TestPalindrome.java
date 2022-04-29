@@ -22,9 +22,10 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome(null));
         assertTrue(palindrome.isPalindrome("a"));
         //Test true
-        assertTrue(palindrome.isPalindrome("racecar"));
+        assertTrue(palindrome.isPalindrome("aabbcccbbaa"));
         //Test false
-        assertFalse(palindrome.isPalindrome("cat"));
+        assertFalse(palindrome.isPalindrome("ab"));
+        assertFalse(palindrome.isPalindrome("ababba"));
     }
 
     @Test
@@ -34,8 +35,8 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome(null, cc));
         assertTrue(palindrome.isPalindrome("a", cc));
         //Test true
-        assertTrue(palindrome.isPalindrome("abab", cc));
+        assertTrue(palindrome.isPalindrome("flake", cc));
         //Test false
-        assertFalse(palindrome.isPalindrome("cat", cc));
+        assertFalse(palindrome.isPalindrome("aba", cc));
     }
 }
