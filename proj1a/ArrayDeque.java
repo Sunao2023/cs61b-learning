@@ -4,7 +4,7 @@ public class ArrayDeque<T> {
     private int nextFirst;
     private int nextLast;
 
-    private static int capicity = 8;
+    private int capicity = 8;
 
     /**
      * Creates an empty list.
@@ -16,7 +16,8 @@ public class ArrayDeque<T> {
         nextLast = 0;
     }
     /** Resizing the underlying array to the target capacity*/
-    private void resize() {
+    private void grow() {
+        capicity *= 2;
         T[] a = (T[]) new Object[capicity];
         System.arraycopy(items, 0, a, 0, nextLast);
         System.arraycopy(items, nextLast + 1, a,
@@ -28,8 +29,7 @@ public class ArrayDeque<T> {
     /** Adds an item to the front of the deque.*/
     public void addFirst(T x) {
         if (nextFirst == nextLast) {
-            capicity *= 2;
-            resize();
+            grow();
         }
         items[nextFirst] = x;
         nextFirst = nextFirst - 1;
@@ -39,8 +39,7 @@ public class ArrayDeque<T> {
     /** Adds an item to the back of thr deque. */
     public void addLast(T x) {
         if (nextFirst == nextLast) {
-            capicity *= 2;
-            resize();
+            grow();
         }
         items[nextLast] = x;
         nextLast = nextLast + 1;
@@ -59,10 +58,10 @@ public class ArrayDeque<T> {
 
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        int index = nextFirst;
-        while (index % capicity != (nextLast - 1 + capicity) % capicity) {
-            System.out.print(items[index + 1] + " ");
-            index += 1;
+        int index = nextFirst + 1;
+        while (index != (nextLast - 1 + capicity) % capicity) {
+            System.out.print(items[index] + " ");
+            index = (index + 1) % capicity;
         }
     }
 
