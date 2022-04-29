@@ -1,4 +1,5 @@
 public class ArrayDeque<T> {
+
     private T[] items;
     private int size;
     private int nextFirst;
@@ -26,6 +27,20 @@ public class ArrayDeque<T> {
         nextFirst = capicity / 2 + nextLast;
     }
 
+    private void shrink() {
+        T[] a = (T[]) new Object[capicity / 2];
+        int index = (nextFirst + 1) % capicity;
+        int count = 0;
+        while (index != nextLast) {
+            a[count] = items[index];
+            index = (index + 1) % capicity;
+            count++;
+        }
+        items = a;
+        capicity /= 2;
+        nextFirst = capicity - 1;
+        nextLast = count;
+    }
     /** Adds an item to the front of the deque.*/
     public void addFirst(T x) {
         if (nextFirst == nextLast) {
@@ -42,7 +57,7 @@ public class ArrayDeque<T> {
             grow();
         }
         items[nextLast] = x;
-        nextLast = (nextLast + 1 + capicity) % capicity;
+        nextLast = (nextLast + 1) % capicity;
         size += 1;
     }
 
@@ -58,8 +73,8 @@ public class ArrayDeque<T> {
 
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        int index = nextFirst + 1;
-        while (index != ((nextLast - 1 + capicity) % capicity)) {
+        int index = (nextFirst + 1) % capicity;
+        while (index != nextLast) {
             System.out.print(items[index] + " ");
             index = (index + 1) % capicity;
         }
@@ -68,6 +83,9 @@ public class ArrayDeque<T> {
     /** Removes and returns the item at the front of the deque.
      * If no such item exists, returns null. */
     public T removeFirst() {
+        if (capicity > 16 && capicity / size >= 4) {
+            shrink();
+        }
         if (size == 0) {
             return null;
         }
@@ -79,6 +97,9 @@ public class ArrayDeque<T> {
     /** Removes and returns the item at the back of the deque.
      * If no such item exists, returns null. */
     public T removeLast() {
+        if (capicity > 16 && capicity / size >= 4) {
+            shrink();
+        }
         if (size == 0) {
             return null;
         }
@@ -90,6 +111,6 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      *If no such item exists, returns null. Must not alter the deque. */
     public T get(int index) {
-        return items[((nextFirst + 1 + index) % capicity)];
+        return items[(nextFirst + 1 + index) % capicity];
     }
 }

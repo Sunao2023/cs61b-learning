@@ -1,4 +1,5 @@
 public class LinkedListDeque<T> {
+    
     private class DequeNode {
         DequeNode front;
         T item;
