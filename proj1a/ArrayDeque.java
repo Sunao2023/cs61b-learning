@@ -4,7 +4,7 @@ public class ArrayDeque<T> {
     private int nextFirst;
     private int nextLast;
 
-    private int capicity = 8;
+    private static int capicity = 8;
 
     /**
      * Creates an empty list.
@@ -12,24 +12,24 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[capicity];
         size = 0;
-        nextFirst = 3;
-        nextLast = 4;
+        nextFirst = 7;
+        nextLast = 0;
     }
     /** Resizing the underlying array to the target capacity*/
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
         System.arraycopy(items, 0, a, 0, nextLast);
         System.arraycopy(items, nextLast + 1, a,
-                capacity / 2 + nextLast, capacity / 2 - nextLast - 1);
+                capacity / 2 + nextLast + 1, capacity / 2 - nextLast - 1);
         items = a;
     }
 
     /** Adds an item to the front of the deque.*/
     public void addFirst(T x) {
-        if (nextFirst % capicity == nextLast) {
+        if (nextFirst == nextLast) {
             capicity *= 2;
             resize(capicity);
-            nextFirst = capicity / 2 + nextLast - 1;
+            nextFirst = capicity / 2 + nextLast;
         }
         items[nextFirst] = x;
         nextFirst = (nextFirst - 1 + capicity) % capicity;
@@ -38,7 +38,7 @@ public class ArrayDeque<T> {
 
     /** Adds an item to the back of thr deque. */
     public void addLast(T x) {
-        if (nextFirst % capicity == nextLast) {
+        if (nextFirst == nextLast) {
             capicity *= 2;
             resize(capicity);
         }
