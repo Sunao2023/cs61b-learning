@@ -59,7 +59,7 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
         int index = nextFirst + 1;
-        while (index != (nextLast - 1 + capicity) % capicity) {
+        while (index != ((nextLast - 1 + capicity) % capicity)) {
             System.out.print(items[index] + " ");
             index = (index + 1) % capicity;
         }
@@ -71,7 +71,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[(nextFirst + 1) % capicity];
+        T item = items[((nextFirst + 1) % capicity)];
         nextFirst = (nextFirst + 1) % capicity;
         size -= 1;
         return item;
@@ -83,8 +83,8 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[(nextLast - 1 + capicity) % capicity];
-        nextLast = (nextLast - 1 + capicity) % capicity;
+        T item = items[((nextLast + capicity - 1) % capicity)];
+        nextLast = (nextLast + capicity - 1) % capicity;
         size -= 1;
         return item;
     }
@@ -92,6 +92,6 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      *If no such item exists, returns null. Must not alter the deque. */
     public T get(int index) {
-        return items[(nextFirst + 1 + index) % capicity];
+        return items[((nextFirst + 1 + index) % capicity)];
     }
 }
