@@ -32,7 +32,7 @@ public class ArrayDeque<T> {
             grow();
         }
         items[nextFirst] = x;
-        nextFirst = nextFirst - 1;
+        nextFirst = (nextFirst - 1 + capicity) % capicity;
         size += 1;
     }
 
@@ -42,7 +42,7 @@ public class ArrayDeque<T> {
             grow();
         }
         items[nextLast] = x;
-        nextLast = nextLast + 1;
+        nextLast = (nextLast + 1 + capicity) % capicity;
         size += 1;
     }
 
