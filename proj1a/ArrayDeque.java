@@ -71,10 +71,9 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[((nextFirst + 1) % capicity)];
         nextFirst = (nextFirst + 1) % capicity;
         size -= 1;
-        return item;
+        return items[nextFirst];
     }
 
     /** Removes and returns the item at the back of the deque.
@@ -83,10 +82,9 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[((nextLast + capicity - 1) % capicity)];
         nextLast = (nextLast + capicity - 1) % capicity;
         size -= 1;
-        return item;
+        return items[nextLast];
     }
 
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
