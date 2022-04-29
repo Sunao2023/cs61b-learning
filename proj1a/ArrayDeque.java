@@ -20,7 +20,8 @@ public class ArrayDeque<T> {
         T[] a = (T[]) new Object[capacity];
         System.arraycopy(items, 0, a, 0, nextLast);
         System.arraycopy(items, nextLast + 1, a,
-                capacity/2 + nextLast, capacity/2 - nextLast - 1);
+                capacity / 2 + nextLast, capacity / 2 - nextLast - 1);
+        items = a;
     }
 
     /** Adds an item to the front of the deque.*/
@@ -60,7 +61,7 @@ public class ArrayDeque<T> {
     public void printDeque() {
         int index = nextFirst;
         while (index % capicity != nextLast - 1) {
-            System.out.print(items[nextFirst + 1] + " ");
+            System.out.print(items[index + 1] + " ");
             index += 1;
         }
     }
@@ -73,6 +74,7 @@ public class ArrayDeque<T> {
         }
         T item = items[(nextFirst + 1) % capicity];
         nextFirst += 1;
+        size -= 1;
         return item;
     }
 
@@ -84,6 +86,7 @@ public class ArrayDeque<T> {
         }
         T item = items[(nextLast - 1 + capicity) % capicity];
         nextLast = (nextLast - 1 + capicity) % capicity;
+        size -= 1;
         return item;
     }
 

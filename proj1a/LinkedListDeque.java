@@ -23,9 +23,9 @@ public class LinkedListDeque<T> {
 
     /** Adds an item to the front of the deque. */
     public void addFirst(T x) {
-        DequeNode Node = new DequeNode(sentinel, x, sentinel.back);
-        sentinel.back = Node;
-        Node.back.front = Node;
+        DequeNode node = new DequeNode(sentinel, x, sentinel.back);
+        sentinel.back = node;
+        node.back.front = node;
         size += 1;
     }
 
