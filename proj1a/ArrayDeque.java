@@ -17,7 +17,7 @@ public class ArrayDeque<T> {
     }
     /** Resizing the underlying array to the target capacity*/
     private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
+        T[] a = (T[]) new Object[capicity];
         System.arraycopy(items, 0, a, 0, nextLast);
         System.arraycopy(items, nextLast + 1, a,
                 capacity / 2 + nextLast + 1, capacity / 2 - nextLast - 1);
@@ -32,7 +32,7 @@ public class ArrayDeque<T> {
             nextFirst = capicity / 2 + nextLast;
         }
         items[nextFirst] = x;
-        nextFirst = (nextFirst - 1 + capicity) % capicity;
+        nextFirst = nextFirst - 1;
         size += 1;
     }
 
@@ -43,7 +43,7 @@ public class ArrayDeque<T> {
             resize(capicity);
         }
         items[nextLast] = x;
-        nextLast = (nextLast + 1) % capicity;
+        nextLast = nextLast + 1;
         size += 1;
     }
 
@@ -60,7 +60,7 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
         int index = nextFirst;
-        while (index % capicity != nextLast - 1) {
+        while (index % capicity != (nextLast - 1 + capicity) % capicity) {
             System.out.print(items[index + 1] + " ");
             index += 1;
         }
@@ -72,7 +72,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[(nextFirst + 1) % capicity];
+        T item = items[nextFirst + 1];
         nextFirst += 1;
         size -= 1;
         return item;
@@ -93,6 +93,9 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      *If no such item exists, returns null. Must not alter the deque. */
     public T get(int index) {
+        if ((index >= nextLast && index <= nextFirst) || index < 0 || index >= capicity) {
+            return null;
+        }
         return items[index];
     }
 }
