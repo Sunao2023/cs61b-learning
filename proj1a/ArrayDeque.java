@@ -16,11 +16,11 @@ public class ArrayDeque<T> {
         nextLast = 0;
     }
     /** Resizing the underlying array to the target capacity*/
-    private void resize(int capacity) {
+    private void resize() {
         T[] a = (T[]) new Object[capicity];
         System.arraycopy(items, 0, a, 0, nextLast);
         System.arraycopy(items, nextLast + 1, a,
-                capacity / 2 + nextLast + 1, capacity / 2 - nextLast - 1);
+                capicity / 2 + nextLast + 1, capicity / 2 - nextLast - 1);
         items = a;
     }
 
@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
     public void addFirst(T x) {
         if (nextFirst == nextLast) {
             capicity *= 2;
-            resize(capicity);
+            resize();
             nextFirst = capicity / 2 + nextLast;
         }
         items[nextFirst] = x;
@@ -40,7 +40,7 @@ public class ArrayDeque<T> {
     public void addLast(T x) {
         if (nextFirst == nextLast) {
             capicity *= 2;
-            resize(capicity);
+            resize();
         }
         items[nextLast] = x;
         nextLast = nextLast + 1;
@@ -49,7 +49,7 @@ public class ArrayDeque<T> {
 
     /** Judge whether the deque is empty. */
     public boolean isEmpty() {
-        return (this.size == 0);
+        return (size == 0);
     }
 
     /** Return the size of the deque. */
@@ -72,8 +72,8 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T item = items[nextFirst + 1];
-        nextFirst += 1;
+        T item = items[(nextFirst + 1) % capicity];
+        nextFirst = (nextFirst + 1) % capicity;
         size -= 1;
         return item;
     }
@@ -93,9 +93,9 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      *If no such item exists, returns null. Must not alter the deque. */
     public T get(int index) {
-        if ((index >= nextLast && index <= nextFirst) || index < 0 || index >= capicity) {
+        if (index < 0 || (nextFirst + 1 + index) % capicity >= nextLast) {
             return null;
         }
-        return items[index];
+        return items[(nextFirst + 1 + index) % capicity];
     }
 }
