@@ -22,6 +22,7 @@ public class ArrayDeque<T> {
         System.arraycopy(items, nextLast + 1, a,
                 capicity / 2 + nextLast + 1, capicity / 2 - nextLast - 1);
         items = a;
+        nextFirst = capicity / 2 + nextLast;
     }
 
     /** Adds an item to the front of the deque.*/
@@ -29,7 +30,6 @@ public class ArrayDeque<T> {
         if (nextFirst == nextLast) {
             capicity *= 2;
             resize();
-            nextFirst = capicity / 2 + nextLast;
         }
         items[nextFirst] = x;
         nextFirst = nextFirst - 1;
@@ -93,9 +93,6 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      *If no such item exists, returns null. Must not alter the deque. */
     public T get(int index) {
-        if (index < 0 || (nextFirst + 1 + index) % capicity >= nextLast) {
-            return null;
-        }
         return items[(nextFirst + 1 + index) % capicity];
     }
 }
