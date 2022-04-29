@@ -1,11 +1,10 @@
 public class LinkedListDeque<T> {
-    
+
     private class DequeNode {
         DequeNode front;
         T item;
         DequeNode back;
-
-        public DequeNode(DequeNode f, T i, DequeNode b) {
+        DequeNode(DequeNode f, T i, DequeNode b) {
             front = f;
             item = i;
             back = b;
