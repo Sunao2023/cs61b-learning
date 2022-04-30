@@ -1,9 +1,6 @@
 public class Palindrome {
     public Deque<Character> wordToDeque(String word) {
         Deque<Character> charDeque = new LinkedListDeque<>();
-        if (word == null) {
-            return charDeque;
-        }
         char[] a = word.toCharArray();
         for (char i : a) {
             charDeque.addLast(i);
