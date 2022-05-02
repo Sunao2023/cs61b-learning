@@ -10,7 +10,6 @@ public class TestArrayRingBuffer {
     @Test
     public void someTest() {
         ArrayRingBuffer<Integer> a = new ArrayRingBuffer<>(10);
-        assertTrue(a.isEmpty());
         a.enqueue(1);
         a.enqueue(2);
         a.enqueue(3);
