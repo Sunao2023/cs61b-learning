@@ -3,6 +3,12 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
+import static byog.Core.HallwayGenerator.drawHallway;
+import static byog.Core.RoomGenerator.clean;
+import static byog.Core.RoomGenerator.drawRoom;
+import static byog.Core.WorldGenerator.generateRooms;
+import static byog.Core.WorldGenerator.randomPath;
+
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
@@ -28,11 +34,40 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        char[] inputarr = input.toCharArray();
+        int[] num = new int[inputarr.length - 2];
+        for (int i = 1; i < inputarr.length - 1; i++) {
+            num[i - 1] = (int) inputarr[i];
+        }
 
-        TETile[][] finalWorldFrame = null;
+        int index = 0;
+        long inputLong = 0;
+        for (int j = num.length - 1; j >= 0; j--) {
+            inputLong += num[index] * Math.pow(10, j);
+            index += 1;
+        }
+
+        WorldGenerator world = new WorldGenerator(inputLong);
+
+        Rooms rooms = generateRooms();
+        Roads roads = randomPath(rooms);
+
+        for (RoomGenerator room : rooms) {
+            drawRoom(world.tiles, room);
+        }
+        for (HallwayGenerator road : roads) {
+            drawHallway(world.tiles, road);
+        }
+        for (RoomGenerator room :rooms) {
+            clean(world.tiles, room);
+        }
+        for (HallwayGenerator road : roads) {
+            HallwayGenerator.clean(world.tiles, road);
+        }
+
+        TETile[][] finalWorldFrame = world.tiles;
         return finalWorldFrame;
     }
 }
