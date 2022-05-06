@@ -2,6 +2,7 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
 
 import static byog.Core.HallwayGenerator.drawHallway;
 import static byog.Core.RoomGenerator.clean;
@@ -10,6 +11,22 @@ import static byog.Core.WorldGenerator.generateRooms;
 import static byog.Core.WorldGenerator.randomPath;
 
 public class Game {
+        TERenderer ter = new TERenderer();
+        /* Feel free to change the width and height. */
+        public static final int WIDTH = 80;
+        public static final int HEIGHT = 30;
+
+        private TETile[][] worldInitialize() {
+            // initialize tiles
+            TETile[][] world = new TETile[WIDTH][HEIGHT];
+
+            for (int x = 0; x < WIDTH; x += 1) {
+                for (int y = 0; y < HEIGHT; y += 1) {
+                    world[x][y] = Tileset.NOTHING;
+                }
+            }
+            return world;
+        }
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
@@ -31,20 +48,10 @@ public class Game {
     public TETile[][] playWithInputString(String input) {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        char[] inputarr = input.toCharArray();
-        int[] num = new int[inputarr.length - 2];
-        for (int i = 1; i < inputarr.length - 1; i++) {
-            num[i - 1] = (int) inputarr[i];
-        }
+        long inputLong = Long.parseLong(input.replaceAll("[^0-9]", ""));
 
-        int index = 0;
-        long inputLong = 0;
-        for (int j = num.length - 1; j >= 0; j--) {
-            inputLong += num[index] * Math.pow(10, j);
-            index += 1;
-        }
-
-        WorldGenerator world = new WorldGenerator(inputLong);
+        TETile[][] newWorld = worldInitialize();
+        WorldGenerator world = new WorldGenerator(inputLong, newWorld);
 
         Rooms rooms = generateRooms();
         Roads roads = randomPath(rooms);
@@ -61,8 +68,6 @@ public class Game {
         for (HallwayGenerator road : roads) {
             HallwayGenerator.clean(world.tiles, road);
         }
-
-        TETile[][] finalWorldFrame = world.tiles;
-        return finalWorldFrame;
+        return world.tiles;
     }
 }

@@ -12,9 +12,7 @@ import static byog.Core.RoomGenerator.drawRoom;
 import static byog.Core.HallwayGenerator.clean;
 
 public class WorldGenerator {
-    private static final int WIDTH = 60;
-    private static final int HEIGHT = 30;
-    private static final int MAXROOM = 50;
+    private static final int MAX = 50; //Max number of room in a map.
     private static final int MIN_ROOM = 4;
     private static final int MAX_ROOM = 7;
     private static long seed = 100;
@@ -22,19 +20,10 @@ public class WorldGenerator {
     protected TERenderer ter;
     protected TETile[][] tiles;
 
-    public WorldGenerator(long input) {
+    public WorldGenerator(long input, TETile[][] w) {
         seed = input;
         randomSeed = new Random(seed);
-        ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-
-        tiles = new TETile[WIDTH][HEIGHT];
-        // initialize tiles
-        for (int x = 0; x < WIDTH; x += 1) {
-            for (int y = 0; y < HEIGHT; y += 1) {
-                tiles[x][y] = Tileset.NOTHING;
-            }
-        }
+        tiles = w;
     }
 
     private static boolean any(boolean[] items) {
@@ -50,8 +39,8 @@ public class WorldGenerator {
         Rooms noIntersect = new Rooms();
         int index = 1;
         for (RoomGenerator r : rs) {
-            boolean[] bool = new boolean[MAXROOM];
-            for (int i = index; i < MAXROOM; i++) {
+            boolean[] bool = new boolean[MAX];
+            for (int i = index; i < MAX; i++) {
                 bool[i] = r.intersects(rs.rooms[i]);
             }
             index++;
@@ -79,9 +68,9 @@ public class WorldGenerator {
 
     public static Rooms generateRooms() {
         Rooms sortedRooms = new Rooms();
-        for (int i = 0; i < MAXROOM; i++) {
-            int x = RandomUtils.uniform(randomSeed, MIN_ROOM, WIDTH - MAX_ROOM);
-            int y = RandomUtils.uniform(randomSeed, MIN_ROOM, HEIGHT - MAX_ROOM);
+        for (int i = 0; i < MAX; i++) {
+            int x = RandomUtils.uniform(randomSeed, MIN_ROOM, Game.WIDTH - MAX_ROOM);
+            int y = RandomUtils.uniform(randomSeed, MIN_ROOM, Game.HEIGHT - MAX_ROOM);
             Position p = new Position(x, y);
             int h = RandomUtils.uniform(randomSeed, MIN_ROOM, MAX_ROOM);
             int w = RandomUtils.uniform(randomSeed, MIN_ROOM, MAX_ROOM);
@@ -107,7 +96,10 @@ public class WorldGenerator {
         }
         return roads;
     }
+}
 
+
+    /*
     public static void main(String[] args) {
         WorldGenerator world = new WorldGenerator(123);
 
@@ -128,5 +120,5 @@ public class WorldGenerator {
         }
         world.ter.renderFrame(world.tiles);
     }
-}
+}*/
 

@@ -5,10 +5,10 @@ import java.util.Iterator;
 public class Rooms implements Iterable<RoomGenerator> {
     protected RoomGenerator[] rooms;
     protected int size;
-    private static final int MAXROOM = 50;
+    private static final int NUM = 50;
 
     public Rooms() {
-        rooms = new RoomGenerator[MAXROOM];
+        rooms = new RoomGenerator[NUM];
         size = 0;
     }
 
