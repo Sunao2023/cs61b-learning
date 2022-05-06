@@ -2,14 +2,9 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
 
 import java.util.Random;
 
-import static byog.Core.HallwayGenerator.drawHallway;
-import static byog.Core.RoomGenerator.clean;
-import static byog.Core.RoomGenerator.drawRoom;
-import static byog.Core.HallwayGenerator.clean;
 
 public class WorldGenerator {
     private static final int MAX = 50; //Max number of room in a map.

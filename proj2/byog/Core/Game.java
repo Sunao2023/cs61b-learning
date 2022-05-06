@@ -11,22 +11,22 @@ import static byog.Core.WorldGenerator.generateRooms;
 import static byog.Core.WorldGenerator.randomPath;
 
 public class Game {
-        TERenderer ter = new TERenderer();
+    TERenderer ter = new TERenderer();
         /* Feel free to change the width and height. */
-        public static final int WIDTH = 80;
-        public static final int HEIGHT = 30;
+    public static final int WIDTH = 80;
+    public static final int HEIGHT = 30;
 
-        private TETile[][] worldInitialize() {
+    private TETile[][] worldInitialize() {
             // initialize tiles
-            TETile[][] world = new TETile[WIDTH][HEIGHT];
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
 
-            for (int x = 0; x < WIDTH; x += 1) {
-                for (int y = 0; y < HEIGHT; y += 1) {
-                    world[x][y] = Tileset.NOTHING;
-                }
+        for (int x = 0; x < WIDTH; x += 1) {
+            for (int y = 0; y < HEIGHT; y += 1) {
+                world[x][y] = Tileset.NOTHING;
             }
-            return world;
         }
+        return world;
+    }
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
