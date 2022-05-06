@@ -10,11 +10,6 @@ import static byog.Core.WorldGenerator.generateRooms;
 import static byog.Core.WorldGenerator.randomPath;
 
 public class Game {
-    TERenderer ter = new TERenderer();
-    /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
-
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
