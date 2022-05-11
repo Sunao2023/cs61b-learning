@@ -25,9 +25,9 @@ public class SimpleOomage implements Oomage {
             return false;
         }
         SimpleOomage that = (SimpleOomage) o;
-        return (this.blue == that.blue) &&
-                (this.red == that.red) &&
-                (this.green == that.green);
+        return (this.blue == that.blue)
+                && (this.red == that.red)
+                && (this.green == that.green);
     }
 
 
