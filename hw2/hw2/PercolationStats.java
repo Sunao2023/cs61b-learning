@@ -5,6 +5,10 @@ import edu.princeton.cs.algs4.StdStats;
 public class PercolationStats {
     private Percolation[] p;
     private double[] result;
+    private double mean;
+    private double stddev;
+    private double confidenceLow;
+    private double confidenceHigh;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         // perform T independent experiments on an N-by-N grid
         if (N <= 0 || T <= 0) {
@@ -15,27 +19,38 @@ public class PercolationStats {
         for (int i = 0; i < T; i++) {
             p[i] = pf.make(N);
             while (!p[i].percolates()) {
-                int row = StdRandom.uniform(0, N);
-                int col = StdRandom.uniform(0, N);
+                int row = StdRandom.uniform(0, N );
+                int col = StdRandom.uniform(0, N );
                 p[i].open(row, col);
             }
-            result[i] = p[i].numberOfOpenSites();
+            result[i] = (double) p[i].numberOfOpenSites() / (N * N);
         }
+        mean = StdStats.mean(result);
+        stddev = StdStats.stddev(result);
+        confidenceLow = this.mean() - this.stddev() * 1.96 / Math.pow(p.length, 0.5);
+        confidenceHigh = this.mean() + this.stddev() * 1.96 / Math.pow(p.length, 0.5);
     }
     public double mean() {
         // sample mean of percolation threshold
-        return StdStats.mean(result);
+        return mean;
     }
     public double stddev() {
         // sample standard deviation of percolation threshold
-        return StdStats.stddev(result);
+        return stddev;
     }
     public double confidenceLow() {
         // low endpoint of 95% confidence interval
-        return (this.mean() - this.stddev() * 1.96 / Math.pow(p.length, 0.5));
+        return confidenceLow;
     }
     public double confidenceHigh() {
         // high endpoint of 95% confidence interval
-        return (this.mean() + this.stddev() * 1.96 / Math.pow(p.length, 0.5));
+        return confidenceHigh;
+    }
+
+    public static void main(String[] args) {
+        PercolationFactory pf = new PercolationFactory();
+        PercolationStats p = new PercolationStats(10, 10, pf);
+        double mean = p.mean();
+        double std = p.stddev();
     }
 }
