@@ -17,7 +17,7 @@ public class Percolation {
         grid = new boolean[N + 1][N];
         for (int i = 0; i < N + 1; i++) {
             WQU.union(i, N * N + N);
-            WQU.union(N * N +N - i - 1, N * N + N + 1);
+            WQU.union(N * N + N - i - 1, N * N + N + 1);
             for (int j = 0; j < N; j++) {
                 grid[i][j] = false;
             }
@@ -35,9 +35,9 @@ public class Percolation {
             return 2;
         } else if (col == 0) {
             return 3;
-        }else if (col == side - 1) {
+        } else if (col == side - 1) {
             return 4;
-        } else if (row == side){
+        } else if (row == side) {
             return 5;
         } else {
             return 0;
@@ -50,12 +50,12 @@ public class Percolation {
         }
     }
 
-    private void openHelper(int row , int col) {
+    private void openHelper(int row, int col) {
         grid[row][col] = true;
         opened += 1;
         int b = isBoundary(row, col);
         switch (b) {
-            case 1 -> {
+            case 1 : {
                 if (col != 0) {
                     flow(row, col, row, col - 1);
                 }
@@ -63,8 +63,9 @@ public class Percolation {
                     flow(row, col, row, col + 1);
                 }
                 flow(row, col, row + 1, col);
+                break;
             }
-            case 2 -> {
+            case 2: {
                 if (col != 0) {
                     flow(row, col, row, col - 1);
                 }
@@ -72,24 +73,28 @@ public class Percolation {
                     flow(row, col, row, col + 1);
                 }
                 flow(row, col, row - 1, col);
+                break;
             }
-            case 3 -> {
+            case 3 : {
                 flow(row, col, row + 1, col);
                 flow(row, col, row, col + 1);
                 flow(row, col, row - 1, col);
+                break;
             }
-            case 4 -> {
+            case 4 : {
                 flow(row, col, row + 1, col);
                 flow(row, col, row, col - 1);
                 flow(row, col, row - 1, col);
+                break;
             }
-            case 0 -> {
+            case 0 : {
                 flow(row, col, row + 1, col);
                 flow(row, col, row, col + 1);
                 flow(row, col, row, col - 1);
                 flow(row, col, row - 1, col);
+                break;
             }
-            default -> {
+            default : {
                 opened -= 1;
             }
         }
