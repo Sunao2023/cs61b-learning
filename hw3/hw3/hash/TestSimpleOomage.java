@@ -4,11 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+
 import java.util.TreeSet;
-
-
-import java.util.*;
-
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestSimpleOomage {
 
