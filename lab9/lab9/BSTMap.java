@@ -78,8 +78,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             p.left = putHelper(key, value, p.left);
         } else if (cmp < 0) {
             p.right = putHelper(key, value, p.right);
-        }
-        else {
+        } else {
             p.value = value;
         }
         return p;

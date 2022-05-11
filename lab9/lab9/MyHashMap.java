@@ -62,7 +62,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     private void resize(int n) {
-        MyHashMap<K, V> newMap= new MyHashMap(n);
+        MyHashMap<K, V> newMap = new MyHashMap(n);
         for (int i = 0; i < buckets.length; i++) {
             for (K k : buckets[i].keySet()) {
                 newMap.put(k, buckets[i].get(k));
