@@ -67,6 +67,10 @@ public class Percolation {
                 if (side != 1) {
                     flow(row, col, row + 1, col);
                 }
+                if (side == 1) {
+                    check[checkIndex] = xyToInt(row, col);
+                    checkIndex++;
+                }
                 break;
             }
             case 2: {
