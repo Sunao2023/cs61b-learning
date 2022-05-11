@@ -64,7 +64,9 @@ public class Percolation {
                 if (col != side - 1) {
                     flow(row, col, row, col + 1);
                 }
-                flow(row, col, row + 1, col);
+                if (side != 1) {
+                    flow(row, col, row + 1, col);
+                }
                 break;
             }
             case 2: {
@@ -114,13 +116,13 @@ public class Percolation {
     }
 
     public boolean isOpen(int row, int col) { // is the site (row, col) open?
-        if (row < 0 || row > side - 1|| col < 0 || col > side - 1) {
+        if (row < 0 || row > side - 1 || col < 0 || col > side - 1) {
             throw new IndexOutOfBoundsException("Error");
         }
         return grid[row][col];
     }
     public boolean isFull(int row, int col) { // is the site (row, col) full?
-        if (row < 0 || row > side - 1|| col < 0 || col > side - 1) {
+        if (row < 0 || row > side - 1 || col < 0 || col > side - 1) {
             throw new IndexOutOfBoundsException("Error");
         }
         return WQU.connected(xyToInt(row, col), side * side) && isOpen(row, col);
@@ -135,5 +137,8 @@ public class Percolation {
             }
         }
         return false;
+    }
+    public static void main(String[] args) {
+
     }
 }
