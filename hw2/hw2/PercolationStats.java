@@ -3,8 +3,8 @@ package hw2;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 public class PercolationStats {
-    Percolation[] p;
-    double[] result;
+    private Percolation[] p;
+    private double[] result;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         // perform T independent experiments on an N-by-N grid
         if (N <= 0 || T <= 0) {
@@ -19,7 +19,7 @@ public class PercolationStats {
                 int col = StdRandom.uniform(0, N);
                 p[i].open(row, col);
             }
-            result[i] = (double) p[i].opened / N * N;
+            result[i] = (double) p[i].numberOfOpenSites() / N * N;
         }
     }
     public double mean() {
