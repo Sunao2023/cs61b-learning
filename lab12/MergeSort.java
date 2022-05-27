@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.Queue;
 
+import static org.junit.Assert.*;
 public class MergeSort {
     /**
      * Removes and returns the smallest item that is in q1 or q2.
@@ -35,7 +36,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> queues = new Queue<>();
+        while (!items.isEmpty()) {
+            Queue<Item> a = new Queue<>();
+            a.enqueue(items.dequeue());
+            queues.enqueue(a);
+        }
+        return queues;
     }
 
     /**
@@ -54,13 +61,41 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> sorted = new Queue<>();
+
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            sorted.enqueue(getMin(q1, q2));
+        }
+
+        return sorted;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        Queue<Queue<Item>> itemsQueue = makeSingleItemQueues(items);
+        while (itemsQueue.size() != 1) {
+            itemsQueue.enqueue(mergeSortedQueues(itemsQueue.dequeue(), itemsQueue.dequeue()));
+        }
+        return itemsQueue.dequeue();
+    }
+
+    public static void main(String[] args) {
+        Queue<String> students = new Queue<String>();
+        students.enqueue("Alice");
+        students.enqueue("Vanessa");
+        students.enqueue("Ethan");
+
+        Queue<String> result =  MergeSort.mergeSort(students);
+
+        Queue<String> exp = new Queue<>();
+        exp.enqueue("Alice");
+        exp.enqueue("Ethan");
+        exp.enqueue("Vanessa");
+
+        while (!exp.isEmpty()) {
+            assertEquals(exp.dequeue(), result.dequeue());
+        }
     }
 }
