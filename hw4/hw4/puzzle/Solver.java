@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.Stack;
 
-public final class Solver {
+public class Solver {
     /**
      * Solver(initial): Constructor which solves the puzzle, computing
      *                  everything necessary for moves() and solution() to

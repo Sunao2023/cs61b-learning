@@ -1,7 +1,7 @@
 package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
-public final class Board implements WorldState {
+public class Board implements WorldState {
     /** Board(tiles): Constructs a board from an N-by-N array of tiles where
      tiles[i][j] = tile at row i, column j
      tileAt(i, j): Returns value of tile at row i, column j (or 0 if blank)
@@ -17,7 +17,7 @@ public final class Board implements WorldState {
      toString():   Returns the string representation of the board. This
      method is provided in the skeleton
      */
-    private int N;
+    private final int N;
     private int[][] puzzle;
     private final int BLANK = 0;
 
@@ -82,6 +82,9 @@ public final class Board implements WorldState {
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
+                if (puzzle[i][j] == BLANK) {
+                    continue;
+                }
                 if (puzzle[i][j] != xyToOne(i, j)) {
                     count++;
                 }
@@ -101,6 +104,9 @@ public final class Board implements WorldState {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 int pos = xyToOne(i, j);
+                if (puzzle[i][j] == BLANK) {
+                    continue;
+                }
                 if (puzzle[i][j] != pos) {
                     count += Math.abs(toX(pos) - i) + Math.abs(toY(pos) - j);
                 }
@@ -120,7 +126,6 @@ public final class Board implements WorldState {
       * Uncomment this method. */
     public String toString() {
         StringBuilder s = new StringBuilder();
-        int N = size();
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -130,5 +135,9 @@ public final class Board implements WorldState {
         }
         s.append("\n");
         return s.toString();
+    }
+
+    public int hashCode() {
+        return this.toString().hashCode();
     }
 }
