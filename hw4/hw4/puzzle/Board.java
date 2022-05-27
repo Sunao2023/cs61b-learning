@@ -82,10 +82,7 @@ public class Board implements WorldState {
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (puzzle[i][j] == BLANK) {
-                    continue;
-                }
-                if (puzzle[i][j] != xyToOne(i, j)) {
+                if (puzzle[i][j] != xyToOne(i, j) && puzzle[i][j] != BLANK) {
                     count++;
                 }
             }
@@ -97,17 +94,14 @@ public class Board implements WorldState {
         return (pos - 1) / N;
     }
     private int toY(int pos) {
-        return pos % N - 1;
+        return (pos - 1) % N;
     }
     public int manhattan() {
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 int pos = xyToOne(i, j);
-                if (puzzle[i][j] == BLANK) {
-                    continue;
-                }
-                if (puzzle[i][j] != pos) {
+                if (puzzle[i][j] != pos && puzzle[i][j] != BLANK) {
                     count += Math.abs(toX(pos) - i) + Math.abs(toY(pos) - j);
                 }
             }
