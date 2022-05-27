@@ -102,7 +102,7 @@ public class Board implements WorldState {
             for (int j = 0; j < N; j++) {
                 int pos = xyToOne(i, j);
                 if (puzzle[i][j] != pos && puzzle[i][j] != BLANK) {
-                    count += Math.abs(toX(pos) - i) + Math.abs(toY(pos) - j);
+                    count += Math.abs(toX(puzzle[i][j]) - i) + Math.abs(toY(puzzle[i][j]) - j);
                 }
             }
         }
