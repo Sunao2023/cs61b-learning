@@ -94,7 +94,7 @@ public class Board implements WorldState {
     }
 
     private int toX(int pos) {
-        return pos / N;
+        return (pos - 1) / N;
     }
     private int toY(int pos) {
         return pos % N - 1;
@@ -118,6 +118,9 @@ public class Board implements WorldState {
         return manhattan();
     }
     public boolean equals(Object y) {
+        if (y == null) {
+            return false;
+        }
         return this.toString().equals(y.toString());
     }
 
