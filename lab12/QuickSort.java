@@ -79,7 +79,8 @@ public class QuickSort {
         less = quickSort(less);
         greater = quickSort(greater);
 
-        return catenate(catenate(less, equal), greater);
+        items = catenate(catenate(less, equal), greater);
+        return items;
     }
 
     public static void main(String[] args) {
