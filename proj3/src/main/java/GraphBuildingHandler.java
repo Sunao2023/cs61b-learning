@@ -2,8 +2,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
 
 /**
  *  Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
@@ -106,10 +107,11 @@ public class GraphBuildingHandler extends DefaultHandler {
             String v = attributes.getValue("v");
             if (k.equals("maxspeed")) {
                 //System.out.println("Max Speed: " + v);
-                /* TODO set the max speed of the "current way" here. */
+                /* set the max speed of the "current way" here. */
+                return;
             } else if (k.equals("highway")) {
                 //System.out.println("Highway type: " + v);
-                /* TODO Figure out whether this way and its connections are valid. */
+                /* Figure out whether this way and its connections are valid. */
                 /* Hint: Setting a "flag" is good enough! */
                 for (String i : ALLOWED_HIGHWAY_TYPES) {
                     if (v.equals(i)) {
@@ -119,6 +121,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                 }
             } else if (k.equals("name")) {
                 //System.out.println("Way Name: " + v);
+                return;
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")

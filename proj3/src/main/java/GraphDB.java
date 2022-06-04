@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
 
+
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
  * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
@@ -162,7 +163,7 @@ public class GraphDB {
         long result = 0;
         for (Long i : db.keySet()) {
             double dis = distance(db.get(i).lon, db.get(i).lat, lon, lat);
-            if(dis < comparator) {
+            if (dis < comparator) {
                 result = i;
                 comparator = dis;
             }
