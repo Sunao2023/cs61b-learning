@@ -159,7 +159,7 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        double comparator = 1000000;
+        double comparator = Double.MAX_VALUE;
         long result = 0;
         for (Long i : db.keySet()) {
             double dis = distance(db.get(i).lon, db.get(i).lat, lon, lat);
@@ -199,5 +199,9 @@ public class GraphDB {
     void addAdjNodes(Long i, Long j) {
         db.get(i).adjNodes.add(j);
         db.get(j).adjNodes.add(i);
+    }
+
+    Node get(Long id) {
+        return db.get(id);
     }
 }

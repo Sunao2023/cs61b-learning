@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,10 +22,78 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
+    private static GraphDB.Node start;
+    private static GraphDB.Node end;
+    private static GraphDB graph;
+
+    private static class Dist implements Comparable<Dist> {
+        long id;
+        Dist parent;
+        double distToStart;
+        double priorit;
+        Dist(long id, Dist parent,double distToStart) {
+            this.id = id;
+            this.parent = parent;
+            this.distToStart = distToStart;
+            this.priorit = distToStart + distToDest(id);
+        }
+        @Override
+        public int compareTo(Dist a) {
+            double diff = this.priorit - a.priorit;
+            if (diff > 0) {
+                return 1;
+            } else if (diff == 0) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    private static double distToDest(Long id) {
+        return GraphDB.distance(graph.lon(id), graph.lat(id), end.lon, end.lat);
+    }
+
+    private static boolean isGoal(Dist v) {
+        return distToDest(v.id) == 0;
+    }
+
+    private static double distance(GraphDB g, Long id1, Long id2) {
+        return g.distance(id1, id2);
+    }
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        graph = g;
+        start = graph.get(graph.closest(stlon, stlat));
+        end = graph.get(graph.closest(destlon, destlat));
+        Map<Long, Boolean> marked = new HashMap<>();
+        PriorityQueue<Dist> pq = new PriorityQueue<>();
+        pq.offer(new Dist(start.id, null, 0));
+
+        while (!pq.isEmpty() && !isGoal(pq.peek())) {
+            Dist v = pq.poll();
+            marked.put(v.id, true);
+            for (Long w : g.adjacent(v.id)) {
+                if (!marked.containsKey(w) || !marked.get(w)) {
+                    pq.offer(new Dist(w, v, v.distToStart + distance(graph, w, v.id)));
+                }
+            }
+        }
+
+        Dist pos = pq.peek();
+        Stack<Long> a = new Stack<>();
+        while (pos != null) {
+            a.push(pos.id);
+            pos = pos.parent;
+        }
+        List<Long> result = new LinkedList<>();
+        while (!a.isEmpty()) {
+            result.add(a.pop());
+        }
+        return result;
     }
+
+
 
     /**
      * Create the list of directions corresponding to a route on the graph.
@@ -37,7 +104,7 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        return null;
     }
 
 
