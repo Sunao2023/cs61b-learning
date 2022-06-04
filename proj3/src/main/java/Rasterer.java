@@ -44,7 +44,7 @@ public class Rasterer {
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         Map<String, Object> results = new HashMap<>();
-        String[][] render_grid;
+        String[][] renderGrid;
         int depth;
         double ullon, ullat, lrlon, lrlat, w;
         ullon = params.get("ullon");
@@ -52,10 +52,10 @@ public class Rasterer {
         lrlon = params.get("lrlon");
         lrlat = params.get("lrlat");
         w = params.get("w");
-        double start_lon = MapServer.ROOT_ULLON;
-        double start_lat = MapServer.ROOT_ULLAT;
-        double end_lon = MapServer.ROOT_LRLON;
-        double end_lat = MapServer.ROOT_LRLAT;
+        double startLon = MapServer.ROOT_ULLON;
+        double startLat = MapServer.ROOT_ULLAT;
+        double endLon = MapServer.ROOT_LRLON;
+        double endLat = MapServer.ROOT_LRLAT;
 
         //find and put depth into result.
         depth = findDepth(lrlon, ullon, w);
@@ -63,22 +63,22 @@ public class Rasterer {
 
         //create a render based on depth.
         int N = (int) Math.pow(2, depth);
-        double lonGap = (end_lon - start_lon) / N;
-        double latGap = (start_lat - end_lat) / N;
+        double lonGap = (endLon - startLon) / N;
+        double latGap = (startLat - endLat) / N;
 
-        int startLonBlock = sumBlock(ullon, start_lon, lonGap);
-        int startLatBlock = sumBlock(start_lat, ullat, latGap);
-        int endLonBlock = sumBlock(lrlon, start_lon, lonGap) + 1;
-        int endLatBlock = sumBlock(start_lat, lrlat, latGap) + 1;
+        int startLonBlock = sumBlock(ullon, startLon, lonGap);
+        int startLatBlock = sumBlock(startLat, ullat, latGap);
+        int endLonBlock = sumBlock(lrlon, startLon, lonGap) + 1;
+        int endLatBlock = sumBlock(startLat, lrlat, latGap) + 1;
 
-        render_grid = mapCreator(startLonBlock, startLatBlock, endLonBlock, endLatBlock, depth);
-        results.put("render_grid", render_grid);
+        renderGrid = mapCreator(startLonBlock, startLatBlock, endLonBlock, endLatBlock, depth);
+        results.put("render_grid", renderGrid);
 
         //put other parameters.
-        results.put("raster_ul_lon", start_lon + startLonBlock * lonGap);
-        results.put("raster_ul_lat", start_lat - startLatBlock * latGap);
-        results.put("raster_lr_lon", start_lon + endLonBlock * lonGap);
-        results.put("raster_lr_lat", start_lat - endLatBlock * latGap);
+        results.put("raster_ul_lon", startLon + startLonBlock * lonGap);
+        results.put("raster_ul_lat", startLat - startLatBlock * latGap);
+        results.put("raster_lr_lon", startLon + endLonBlock * lonGap);
+        results.put("raster_lr_lat", startLat - endLatBlock * latGap);
 
         results.put("query_success", true);
 
@@ -87,9 +87,9 @@ public class Rasterer {
 
     private int findDepth(double lrl, double ull, double width) {
         int result = 0;
-        double LonDPP = (lrl - ull) / width;
+        double lonDPP = (lrl - ull) / width;
         double start = 0.000171661376953125 * 2;
-        while (LonDPP < start && result < 7) {
+        while (lonDPP < start && result < 7) {
             result += 1;
             start /= 2;
         }
