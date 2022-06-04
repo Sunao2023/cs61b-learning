@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -20,6 +20,21 @@ import java.util.ArrayList;
 public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
+    private final Map<Long, Node> db = new HashMap<>();
+    static class Node {
+        long id;
+        double lat, lon;
+        Map<String, String> info;
+        Set<Long> adjNodes;
+        Node(long id, double lat, double lon) {
+            this.id = id;
+            this.lat = lat;
+            this.lon = lon;
+            this.info = new HashMap<>();
+            this.adjNodes = new HashSet<>();
+        }
+    }
+
 
     /**
      * Example constructor shows how to create and start an XML parser.
@@ -57,7 +72,14 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        // TODO: Your code here.
+        //Your code here.
+        Iterator<Long> iter = db.keySet().iterator();
+        while (iter.hasNext()) {
+            Long i = iter.next();
+            if (db.get(i).adjNodes.isEmpty()) {
+                iter.remove();
+            }
+        }
     }
 
     /**
@@ -66,7 +88,7 @@ public class GraphDB {
      */
     Iterable<Long> vertices() {
         //YOUR CODE HERE, this currently returns only an empty list.
-        return new ArrayList<Long>();
+        return db.keySet();
     }
 
     /**
@@ -75,7 +97,7 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-        return null;
+        return db.get(v).adjNodes;
     }
 
     /**
@@ -136,7 +158,16 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        return 0;
+        double comparator = 1000000;
+        long result = 0;
+        for (Long i : db.keySet()) {
+            double dis = distance(db.get(i).lon, db.get(i).lat, lon, lat);
+            if(dis < comparator) {
+                result = i;
+                comparator = dis;
+            }
+        }
+        return result;
     }
 
     /**
@@ -145,7 +176,7 @@ public class GraphDB {
      * @return The longitude of the vertex.
      */
     double lon(long v) {
-        return 0;
+        return db.get(v).lon;
     }
 
     /**
@@ -154,6 +185,18 @@ public class GraphDB {
      * @return The latitude of the vertex.
      */
     double lat(long v) {
-        return 0;
+        return db.get(v).lat;
+    }
+    void insert(Node i) {
+        db.put(i.id, i);
+    }
+
+    void rename(Long i, String name) {
+        db.get(i).info.put("name", name);
+    }
+
+    void addAdjNodes(Long i, Long j) {
+        db.get(i).adjNodes.add(j);
+        db.get(j).adjNodes.add(i);
     }
 }
