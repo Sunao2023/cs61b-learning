@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * This class provides all code necessary to take a query box and produce
  * a query result. The getMapRaster method must return a Map containing all
@@ -42,11 +43,74 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
+        String[][] render_grid;
+        int depth;
+        double ullon, ullat, lrlon, lrlat, w;
+        ullon = params.get("ullon");
+        ullat = params.get("ullat");
+        lrlon = params.get("lrlon");
+        lrlat = params.get("lrlat");
+        w = params.get("w");
+        double start_lon = MapServer.ROOT_ULLON;
+        double start_lat = MapServer.ROOT_ULLAT;
+        double end_lon = MapServer.ROOT_LRLON;
+        double end_lat = MapServer.ROOT_LRLAT;
+
+        //find and put depth into result.
+        depth = findDepth(lrlon, ullon, w);
+        results.put("depth", depth);
+
+        //create a render based on depth.
+        int N = (int) Math.pow(2, depth);
+        double lonGap = (end_lon - start_lon) / N;
+        double latGap = (start_lat - end_lat) / N;
+
+        int startLonBlock = sumBlock(ullon, start_lon, lonGap);
+        int startLatBlock = sumBlock(start_lat, ullat, latGap);
+        int endLonBlock = sumBlock(lrlon, start_lon, lonGap) + 1;
+        int endLatBlock = sumBlock(start_lat, lrlat, latGap) + 1;
+
+        render_grid = mapCreator(startLonBlock, startLatBlock, endLonBlock, endLatBlock, depth);
+        results.put("render_grid", render_grid);
+
+        //put other parameters.
+        results.put("raster_ul_lon", start_lon + startLonBlock * lonGap);
+        results.put("raster_ul_lat", start_lat - startLatBlock * latGap);
+        results.put("raster_lr_lon", start_lon + endLonBlock * lonGap);
+        results.put("raster_lr_lat", start_lat - endLatBlock * latGap);
+
+        results.put("query_success", true);
+
         return results;
+    }
+
+    private int findDepth(double lrl, double ull, double width) {
+        int result = 0;
+        double LonDPP = (lrl - ull) / width;
+        double start = 0.000171661376953125 * 2;
+        while (LonDPP < start && result < 7) {
+            result += 1;
+            start /= 2;
+        }
+        return result;
+    }
+
+    private String[][] mapCreator(int a, int b, int c, int d, int e) {
+        String[][] resultMap = new String[d - b][c - a];
+        for (int i = 0; i < d - b; i++) {
+            for (int j = 0; j < c - a; j++) {
+                int x = a + j;
+                int y = b + i;
+                String pos = "d" + e + "_x" + x + "_y" + y + ".png";
+                resultMap[i][j] = pos;
+            }
+        }
+        return resultMap;
+    }
+
+    private int sumBlock(double a, double b, double diff) {
+        return (int) Math.floor((a - b) / diff);
     }
 
 }

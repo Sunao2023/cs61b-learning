@@ -1,11 +1,8 @@
 package hw4.puzzle;
-import edu.princeton.cs.algs4.In;
-import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
 
 /**
  * Local tester for the Solver class. You'll need to uncomment
